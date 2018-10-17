@@ -38,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
-            Intent previewImage = new Intent(this, PreviewImageActivity.class);
-            previewImage.putExtra("BitmapImage", imageBitmap);
+            Intent previewImageIntent = new Intent(this, PreviewImageActivity.class);
+            previewImageIntent.putExtra("BitmapImage", imageBitmap);
 
-            startActivity(previewImage);
-    }
+            startActivity(previewImageIntent);
+        }
     }
 }
 
