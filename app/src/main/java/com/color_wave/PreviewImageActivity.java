@@ -22,7 +22,6 @@ public class PreviewImageActivity extends AppCompatActivity {
         ImageView imagePreview =  findViewById(R.id.imagePreview);
         imagePreview.setImageBitmap(imagePreviewBitmap);
 
-
         Button yesButton = (Button) findViewById(R.id.yesButton);
         yesButton.setOnClickListener( new View.OnClickListener() {
 
