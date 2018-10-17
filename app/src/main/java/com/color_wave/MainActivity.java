@@ -34,14 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        ImageView m = findViewById(R.id.imageView);
-
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            m.setImageBitmap(imageBitmap);
-        }
+
+            Intent previewImage = new Intent(this, PreviewImageActivity.class);
+            previewImage.putExtra("BitmapImage", imageBitmap);
+
+            startActivity(previewImage);
+    }
     }
 }
 
