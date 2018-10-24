@@ -8,6 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.json.*;
+import com.loopj.android.http.*;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +36,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button testButton = findViewById(R.id.get_test);
+        final TextView textText = findViewById(R.id.test_text);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getTestText(textText);
+            }
+        });
     }
 
     @Override
@@ -43,6 +58,20 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(previewImageIntent);
         }
+    }
+
+    public void getTestText(final TextView textView) {
+        ColorWaveRestClient.get("test", null, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                textView.setText(responseString);
+            }
+        });
     }
 }
 
