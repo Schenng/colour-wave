@@ -3,7 +3,7 @@ package com.color_wave;
 import com.loopj.android.http.*;
 
 public class ColorWaveRestClient {
-    private static final String BASE_URL = "https://color-wave-220318.appspot.com/";
+    private static final String BASE_URL = "http://10.0.2.2:8000/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
