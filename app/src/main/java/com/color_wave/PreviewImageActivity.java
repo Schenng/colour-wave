@@ -38,8 +38,8 @@ public class PreviewImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_image);
 
-        Intent previewImageIntent = getIntent();
-        final Bitmap imagePreviewBitmap = previewImageIntent.getParcelableExtra("BitmapImage");
+        byte[] byteArr = getIntent().getByteArrayExtra("BitmapImage");
+        final Bitmap imagePreviewBitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
 
         ImageView imagePreview =  findViewById(R.id.imagePreview);
         imagePreview.setImageBitmap(imagePreviewBitmap);
