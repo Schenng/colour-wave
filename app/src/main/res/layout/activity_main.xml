@@ -24,8 +24,7 @@
             android:text="Let's go!"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:/>
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/hint_toggle"

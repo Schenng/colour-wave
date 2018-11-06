@@ -1,11 +1,8 @@
 <resources>
     <string name="app_name">color-wave</string>
-<<<<<<< HEAD
     <string name="title_activity_display_image">DisplayImageActivity</string>
-=======
 
     <string name="how_it_works_plus">How it works  +</string>
     <string name="how_it_works_minus">How it works  -</string>
 
->>>>>>> restapi
 </resources>
