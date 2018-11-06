@@ -1,5 +1,7 @@
 package com.color_wave;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.*;
@@ -18,33 +21,59 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    int showHints = 1;
+    Button goBtn;
+    Button hintBtn;
+    LinearLayout hintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        hintLayout = findViewById(R.id.hint_text);
+
         // Let's go button
-        Button clickButton = (Button) findViewById(R.id.lets_go);
-        clickButton.setOnClickListener( new View.OnClickListener() {
+        goBtn = findViewById(R.id.lets_go);
+        goBtn.setOnClickListener( new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
             }
         });
 
-        Button testButton = findViewById(R.id.get_test);
-        final TextView textText = findViewById(R.id.test_text);
-        testButton.setOnClickListener(new View.OnClickListener() {
+        hintBtn = findViewById(R.id.hint_toggle);
+        hintBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                getTestText(textText);
+                toggleHints(hintLayout, hintBtn);
             }
         });
+
+        toggleHints(hintLayout, hintBtn);
+    }
+
+    public void toggleHints(final LinearLayout layout, Button button){
+        if (showHints == 0){
+            layout.setVisibility(View.VISIBLE);
+            layout.setAlpha(0.0f);
+            layout.animate().translationY(layout.getHeight()/20).alpha(1.0f).setListener(null);
+            button.setText(R.string.how_it_works_minus);
+        } else {
+            layout.animate().translationY(0).alpha(0.0f).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    layout.setVisibility(View.INVISIBLE);
+                }
+            });
+            button.setText(R.string.how_it_works_plus);
+        }
+        showHints = (showHints + 1) % 2;
     }
 
     @Override
