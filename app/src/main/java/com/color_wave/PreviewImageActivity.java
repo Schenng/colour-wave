@@ -3,6 +3,7 @@ package com.color_wave;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,13 +34,22 @@ import okhttp3.ResponseBody;
 
 public class PreviewImageActivity extends AppCompatActivity {
 
+    Bitmap imagePreviewBitmap = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_image);
 
-        byte[] byteArr = getIntent().getByteArrayExtra("BitmapImage");
-        final Bitmap imagePreviewBitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
+//        byte[] byteArr = getIntent().getByteArrayExtra("BitmapImage");
+//        final Bitmap imagePreviewBitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
+        Uri imageUri = Uri.parse(getIntent().getStringExtra("imageUri"));
+        try {
+            imagePreviewBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         ImageView imagePreview =  findViewById(R.id.imagePreview);
         imagePreview.setImageBitmap(imagePreviewBitmap);
