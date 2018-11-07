@@ -4,25 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/wavePrimaryLt"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:weightSum="10">
 
         <Button
             android:id="@+id/lets_go"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/colorPrimary"
+            android:layout_marginTop="5dp"
+            android:background="@color/wavePrimary"
             android:text="Let's go!"
-            android:textColor="@color/white"
+            android:textColor="@color/waveTextWh"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
@@ -30,13 +33,14 @@
             android:id="@+id/hint_toggle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
-            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:background="@color/colorPrimary"
-            android:text="@string/how_it_works_plus"
-            android:textColor="@color/white"
+            android:background="@color/wavePrimary"
+            android:text="@string/how_it_works"
+            android:textColor="@color/waveTextWh"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -44,12 +48,11 @@
             android:id="@+id/hint_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="80dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:background="@color/black_overlay"
+            android:background="@color/waveTextWh"
             android:animateLayoutChanges="true">
 
             <TextView
@@ -57,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="1. Draw something!"
-                android:textColor="@color/white"
+                android:textColor="@color/waveTextBl"
                 android:textSize="20sp" />
 
             <TextView
@@ -65,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="2. Take a photo"
-                android:textColor="@color/white"
+                android:textColor="@color/waveTextBl"
                 android:textSize="20sp" />
 
             <TextView
@@ -73,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="3. Color!"
-                android:textColor="@color/white"
+                android:textColor="@color/waveTextBl"
                 android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>

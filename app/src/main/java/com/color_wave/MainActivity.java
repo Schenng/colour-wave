@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
             layout.setVisibility(View.VISIBLE);
             layout.setAlpha(0.0f);
             layout.animate().translationY(layout.getHeight()/20).alpha(1.0f).setListener(null);
-            button.setText(R.string.how_it_works_minus);
         } else {
             layout.animate().translationY(0).alpha(0.0f).setListener(new AnimatorListenerAdapter() {
                 @Override
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                     layout.setVisibility(View.INVISIBLE);
                 }
             });
-            button.setText(R.string.how_it_works_plus);
         }
         showHints = (showHints + 1) % 2;
     }
