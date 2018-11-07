@@ -4,5 +4,5 @@
 
     <string name="how_it_works_plus">How it works  +</string>
     <string name="how_it_works_minus">How it works  -</string>
-
+    <string name="file_provider_authority">com.color_wave.android.myfileprovider</string>
 </resources>
