@@ -26,10 +26,7 @@
         </activity>
         <activity android:name=".CameraActivity" />
         <activity android:name=".PreviewImageActivity" />
-        <activity
-            android:name=".DisplayImageActivity"
-            android:label="@string/title_activity_display_image"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".DisplayImageActivity" />
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="@string/file_provider_authority"

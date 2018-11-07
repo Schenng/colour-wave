@@ -1,11 +1,7 @@
 <resources>
     <string name="app_name">Color Wave</string>
     <string name="title_activity_display_image">DisplayImageActivity</string>
-
-<<<<<<< Updated upstream
     <string name="file_provider_authority">com.color_wave.android.myfileprovider</string>
-=======
->>>>>>> Stashed changes
     <string name="how_it_works">How it works</string>
 
 </resources>

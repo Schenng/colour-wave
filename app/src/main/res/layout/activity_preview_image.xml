@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/wavePrimaryLt"
     tools:context=".PreviewImageActivity">
 
     <LinearLayout
@@ -24,14 +25,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5"
             android:layout_gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/confirmImageText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Colour in this image?"
-                android:textSize="17sp"
+                android:text="Color in this image?"
+                android:textSize="20sp"
+                android:layout_weight="2"
+                android:textColor="@color/waveTextBl"
                 android:textAlignment="center"/>
 
             <LinearLayout
@@ -40,17 +45,18 @@
                 android:orientation="horizontal"
                 android:gravity="center_horizontal"
                 android:weightSum="2"
-                android:layout_margin="5dp">
+                android:layout_weight="2"
+                android:layout_margin="15dp">
 
                 <Button
                     android:id="@+id/yesButton"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
                     android:text="Yes"
-                    android:background="@color/colorPrimary"
-                    android:textColor="@color/white"
+                    android:background="@color/wavePrimary"
+                    android:textColor="@color/waveTextWh"
                     android:textStyle="bold"
                     android:textSize="17sp"/>
 
@@ -58,11 +64,11 @@
                     android:id="@+id/noButton"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:text="No"
-                    android:background="@color/colorPrimary"
-                    android:textColor="@color/white"
+                    android:background="@color/wavePrimary"
+                    android:textColor="@color/waveTextWh"
                     android:textStyle="bold"
                     android:textSize="17sp"/>
 
