@@ -18,6 +18,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,9 @@ import cz.msebera.android.httpclient.Header;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -87,9 +91,15 @@ public class PreviewImageActivity extends AppCompatActivity {
         OkHttpClient httpClient = new OkHttpClient();
         String url = "http://35.184.125.33/image";
 
-        RequestBody formBody = new FormBody.Builder()
-                .add("image", encodedImage)
+
+        RequestBody formBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image", encodedImage)
                 .build();
+
+//        RequestBody formBody = new FormBody.Builder()
+//                .add("image", encodedImage)
+//                .build();
 
         Request request = new Request.Builder()
                 .url(url)
