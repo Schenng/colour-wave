@@ -5,4 +5,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="black_overlay">#66000000</color>
+
+    <color name="wavePrimary">#2196F3</color>
+    <color name="wavePrimaryLt">#BBDEFB</color>
+    <color name="wavePrimaryDk">#1976D2</color>
+    <color name="waveTextBl">#212121</color>
+    <color name="waveTextWh">#FFFFFF</color>
+    <color name="waveTextLt">#BDBDBD</color>
+    <color name="waveTextGr">#757575</color>
 </resources>

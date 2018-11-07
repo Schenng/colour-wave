@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">color-wave</string>
+    <string name="app_name">Color Wave</string>
     <string name="title_activity_display_image">DisplayImageActivity</string>
-
-    <string name="how_it_works_plus">How it works  +</string>
-    <string name="how_it_works_minus">How it works  -</string>
     <string name="file_provider_authority">com.color_wave.android.myfileprovider</string>
+    <string name="how_it_works">How it works</string>
+
 </resources>
