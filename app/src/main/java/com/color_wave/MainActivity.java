@@ -104,27 +104,15 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            ByteArrayOutputStream outStr = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStr);
-            byte[] byteArr = outStr.toByteArray();
+//            ByteArrayOutputStream outStr = new ByteArrayOutputStream();
+//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, outStr);
+//            byte[] byteArr = outStr.toByteArray();
+
             Intent previewImageIntent = new Intent(this, PreviewImageActivity.class);
-            previewImageIntent.putExtra("BitmapImage", byteArr);
+//            previewImageIntent.putExtra("BitmapImage", byteArr);
+            previewImageIntent.putExtra("imageUri", imageUri.toString());
             startActivity(previewImageIntent);
         }
-    }
-
-    public void getTestText(final TextView textView) {
-        ColorWaveRestClient.get("test", null, new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                textView.setText(responseString);
-            }
-        });
     }
 }
 

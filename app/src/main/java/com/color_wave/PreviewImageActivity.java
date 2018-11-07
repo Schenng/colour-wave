@@ -3,6 +3,7 @@ package com.color_wave;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +27,9 @@ import cz.msebera.android.httpclient.Header;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -33,13 +38,22 @@ import okhttp3.ResponseBody;
 
 public class PreviewImageActivity extends AppCompatActivity {
 
+    Bitmap imagePreviewBitmap = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_image);
 
-        byte[] byteArr = getIntent().getByteArrayExtra("BitmapImage");
-        final Bitmap imagePreviewBitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
+//        byte[] byteArr = getIntent().getByteArrayExtra("BitmapImage");
+//        final Bitmap imagePreviewBitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
+        Uri imageUri = Uri.parse(getIntent().getStringExtra("imageUri"));
+        try {
+            imagePreviewBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         ImageView imagePreview =  findViewById(R.id.imagePreview);
         imagePreview.setImageBitmap(imagePreviewBitmap);
@@ -77,9 +91,15 @@ public class PreviewImageActivity extends AppCompatActivity {
         OkHttpClient httpClient = new OkHttpClient();
         String url = "http://35.184.125.33/image";
 
-        RequestBody formBody = new FormBody.Builder()
-                .add("image", encodedImage)
+
+        RequestBody formBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image", encodedImage)
                 .build();
+
+//        RequestBody formBody = new FormBody.Builder()
+//                .add("image", encodedImage)
+//                .build();
 
         Request request = new Request.Builder()
                 .url(url)
