@@ -32,10 +32,6 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    int showHints = 1;
-    Button goBtn;
-    Button hintBtn;
-    LinearLayout hintLayout;
     Uri imageUri;
 
     @Override
@@ -43,55 +39,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        hintLayout = findViewById(R.id.hint_text);
-
-        // Let's go button
-        goBtn = findViewById(R.id.lets_go);
-        goBtn.setOnClickListener( new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "ColorWave");
-                if(!mediaStorageDir.exists()){
-                    mediaStorageDir.mkdir();
-                }
-                String timestamp = new SimpleDateFormat("ddMMyyy-HHmmss", Locale.getDefault()).format(new Date());
-                File mediaFile = new File(mediaStorageDir.getPath() + File.separator + timestamp + ".jpg");
-                imageUri = FileProvider.getUriForFile(MainActivity.this, getString(R.string.file_provider_authority), mediaFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
-            }
-        });
-
-        hintBtn = findViewById(R.id.hint_toggle);
-        hintBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                toggleHints(hintLayout, hintBtn);
-            }
-        });
-
-        toggleHints(hintLayout, hintBtn);
-    }
-
-    public void toggleHints(final LinearLayout layout, Button button){
-        if (showHints == 0){
-            layout.setVisibility(View.VISIBLE);
-            layout.setAlpha(0.0f);
-            layout.animate().translationY(layout.getHeight()/20).alpha(1.0f).setListener(null);
-        } else {
-            layout.animate().translationY(0).alpha(0.0f).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    layout.setVisibility(View.INVISIBLE);
-                }
-            });
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "ColorWave");
+        if (!mediaStorageDir.exists()) {
+            mediaStorageDir.mkdir();
         }
-        showHints = (showHints + 1) % 2;
+        String timestamp = new SimpleDateFormat("ddMMyyy-HHmmss", Locale.getDefault()).format(new Date());
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator + timestamp + ".jpg");
+        imageUri = FileProvider.getUriForFile(MainActivity.this, getString(R.string.file_provider_authority), mediaFile);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     @Override
