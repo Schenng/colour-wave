@@ -39,7 +39,13 @@ public class PreviewImageActivity extends AppCompatActivity {
         imageUri = Uri.parse(getIntent().getStringExtra("imageUri"));
 
         ImageView imagePreview =  findViewById(R.id.imagePreview);
-        imagePreview.setImageBitmap(imagePreviewBitmap);
+
+        try {
+            imagePreviewBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+            imagePreview.setImageBitmap(imagePreviewBitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Button yesButton = (Button) findViewById(R.id.yesButton);
         yesButton.setOnClickListener( new View.OnClickListener() {
