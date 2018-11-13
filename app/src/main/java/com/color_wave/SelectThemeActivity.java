@@ -96,7 +96,8 @@ public class SelectThemeActivity extends AppCompatActivity {
                 .build();
 
         ProgressDialog dialog = ProgressDialog.show(SelectThemeActivity.this, "",
-                "Loading. Please wait...", true);
+                    "Processing. Please wait...", true);
+
         httpClient.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
                 Log.e("LOG", "Error getting response from server.");
@@ -114,7 +115,7 @@ public class SelectThemeActivity extends AppCompatActivity {
 
                 Intent DisplayImageIntent = new Intent(SelectThemeActivity.this, DisplayImageActivity.class);
                 DisplayImageIntent.putExtra("processedImage", processedImage);
-
+                finish();
                 startActivity(DisplayImageIntent);
             }
         });
