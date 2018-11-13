@@ -1,5 +1,6 @@
 package com.color_wave;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -94,6 +95,8 @@ public class SelectThemeActivity extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
+        ProgressDialog dialog = ProgressDialog.show(SelectThemeActivity.this, "",
+                "Loading. Please wait...", true);
         httpClient.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
                 Log.e("LOG", "Error getting response from server.");
