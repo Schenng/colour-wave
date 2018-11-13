@@ -50,12 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-//            ByteArrayOutputStream outStr = new ByteArrayOutputStream();
-//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, outStr);
-//            byte[] byteArr = outStr.toByteArray();
-
             Intent previewImageIntent = new Intent(this, PreviewImageActivity.class);
-//            previewImageIntent.putExtra("BitmapImage", byteArr);
             previewImageIntent.putExtra("imageUri", imageUri.toString());
             startActivity(previewImageIntent);
         }

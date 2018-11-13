@@ -30,35 +30,32 @@ import okhttp3.ResponseBody;
 public class PreviewImageActivity extends AppCompatActivity {
 
     Bitmap imagePreviewBitmap = null;
+    Uri imageUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_image);
-        Uri imageUri = Uri.parse(getIntent().getStringExtra("imageUri"));
+        imageUri = Uri.parse(getIntent().getStringExtra("imageUri"));
+
+        ImageView imagePreview =  findViewById(R.id.imagePreview);
+
         try {
             imagePreviewBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+            imagePreview.setImageBitmap(imagePreviewBitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        ImageView imagePreview =  findViewById(R.id.imagePreview);
-        imagePreview.setImageBitmap(imagePreviewBitmap);
 
         Button yesButton = (Button) findViewById(R.id.yesButton);
         yesButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                imagePreviewBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageBytes = baos.toByteArray();
-                String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
-                RequestParams imageParam = new RequestParams();
-                imageParam.add("image", encodedImage);
-
-                getAsyncCall(encodedImage);
+                Intent selectThemeIntent = new Intent(PreviewImageActivity.this, SelectThemeActivity.class);
+                selectThemeIntent.putExtra("imageUri", imageUri.toString());
+                startActivity(selectThemeIntent);
             }
         });
 
@@ -67,44 +64,6 @@ public class PreviewImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-    }
-
-    public void getAsyncCall(String encodedImage){
-        OkHttpClient httpClient = new OkHttpClient();
-        String url = "http://35.184.125.33/image";
-
-        RequestBody formBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("image", encodedImage)
-                .addFormDataPart("model", "edges2shoes")
-                .build();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .post(formBody)
-                .build();
-
-        httpClient.newCall(request).enqueue(new Callback() {
-            @Override public void onFailure(Call call, IOException e) {
-                Log.e("LOG", "Error getting response from server.");
-            }
-
-            @Override public void onResponse(Call call, Response response) throws IOException {
-                ResponseBody responseBody = response.body();
-                if (!response.isSuccessful()) {
-                    throw new IOException("Error response " + response);
-                }
-
-                System.out.println(responseBody.contentType());
-
-                Bitmap processedImage = BitmapFactory.decodeStream(response.body().byteStream());
-
-                Intent DisplayImageIntent = new Intent(PreviewImageActivity.this, DisplayImageActivity.class);
-                DisplayImageIntent.putExtra("processedImage", processedImage);
-
-                startActivity(DisplayImageIntent);
             }
         });
     }
