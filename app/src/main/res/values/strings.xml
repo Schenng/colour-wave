@@ -3,5 +3,6 @@
     <string name="title_activity_display_image">DisplayImageActivity</string>
     <string name="file_provider_authority">com.color_wave.android.myfileprovider</string>
     <string name="how_it_works">How it works</string>
+    <string name="title_activity_select_theme">SelectThemeActivity</string>
 
 </resources>
