@@ -13,9 +13,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.*;
 import com.loopj.android.http.*;
@@ -32,8 +34,10 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int PICK_IMAGE = 2;
     int showHints = 1;
     Button goBtn;
+    Button uploadBtn;
     Button hintBtn;
     LinearLayout hintLayout;
     Uri imageUri;
@@ -43,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        hintLayout = findViewById(R.id.hint_text);
+        hintLayout = findViewById(R.id.hintText);
 
         // Let's go button
-        goBtn = findViewById(R.id.lets_go);
+        goBtn = findViewById(R.id.letsGo);
         goBtn.setOnClickListener( new View.OnClickListener() {
 
             @Override
@@ -66,18 +70,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        hintBtn = findViewById(R.id.hint_toggle);
-        hintBtn.setOnClickListener(new View.OnClickListener(){
+        uploadBtn = findViewById(R.id.uploadImage);
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toggleHints(hintLayout, hintBtn);
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, PICK_IMAGE);
             }
         });
 
-        toggleHints(hintLayout, hintBtn);
+        hintBtn = findViewById(R.id.hintToggle);
+        hintBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                toggleHints(hintLayout);
+            }
+        });
+
+        toggleHints(hintLayout);
     }
 
-    public void toggleHints(final LinearLayout layout, Button button){
+    public void toggleHints(final LinearLayout layout){
         if (showHints == 0){
             layout.setVisibility(View.VISIBLE);
             layout.setAlpha(0.0f);
@@ -97,9 +111,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-            Bitmap imageBitmap = null;
             try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -107,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
             Intent previewImageIntent = new Intent(this, PreviewImageActivity.class);
             previewImageIntent.putExtra("imageUri", imageUri.toString());
             startActivity(previewImageIntent);
+        } else if (requestCode == PICK_IMAGE){
+            if (data != null) {
+                Uri pickedImageUri = data.getData();
+                Intent selectThemeIntent = new Intent(MainActivity.this, SelectThemeActivity.class);
+                selectThemeIntent.putExtra("imageUri", pickedImageUri.toString());
+                startActivity(selectThemeIntent);            }
         }
     }
 }

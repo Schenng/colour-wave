@@ -15,7 +15,7 @@
         android:weightSum="10">
 
         <Button
-            android:id="@+id/lets_go"
+            android:id="@+id/letsGo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -30,7 +30,22 @@
             android:textStyle="bold"/>
 
         <Button
-            android:id="@+id/hint_toggle"
+            android:id="@+id/uploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/wavePrimary"
+            android:text="@string/upload_image"
+            android:textColor="@color/waveTextWh"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/hintToggle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -45,7 +60,7 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/hint_text"
+            android:id="@+id/hintText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
