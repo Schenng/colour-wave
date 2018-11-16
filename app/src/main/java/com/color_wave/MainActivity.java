@@ -123,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (requestCode == PICK_IMAGE){
             if (data != null) {
                 Uri pickedImageUri = data.getData();
-                Intent selectThemeIntent = new Intent(MainActivity.this, SelectThemeActivity.class);
-                selectThemeIntent.putExtra("imageUri", pickedImageUri.toString());
-                startActivity(selectThemeIntent);            }
+                Intent previewImageIntent = new Intent(MainActivity.this, PreviewImageActivity.class);
+                previewImageIntent.putExtra("imageUri", pickedImageUri.toString());
+                startActivity(previewImageIntent);            }
         }
     }
 }
