@@ -97,7 +97,7 @@ public class DisplayImageActivity extends AppCompatActivity {
     }
 
     private void saveImage(){
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString());
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "ColorWave");
         if(!mediaStorageDir.exists()){
             mediaStorageDir.mkdir();
         }

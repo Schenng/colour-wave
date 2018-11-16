@@ -52,7 +52,6 @@ public class PreviewImageActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
                 Intent selectThemeIntent = new Intent(PreviewImageActivity.this, SelectThemeActivity.class);
                 selectThemeIntent.putExtra("imageUri", imageUri.toString());
                 startActivity(selectThemeIntent);
