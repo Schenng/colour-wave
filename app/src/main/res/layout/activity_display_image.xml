@@ -7,10 +7,61 @@
     tools:context=".DisplayImageActivity"
     android:background="@color/wavePrimaryLt">
 
-    <ImageView
-        android:id="@+id/processedImage"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@android:color/transparent" />
+        android:orientation="vertical"
+        android:weightSum="12">
+
+        <ImageView
+            android:id="@+id/processedImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="11"
+            android:layout_margin="15dp"
+            app:srcCompat="@android:color/transparent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="2"
+                android:layout_margin="15dp">
+
+                <Button
+                    android:id="@+id/redoButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="40dp"
+                    android:layout_weight="1"
+                    android:text="Redo"
+                    android:background="@color/wavePrimary"
+                    android:textColor="@color/waveTextWh"
+                    android:textStyle="bold"
+                    android:textSize="17sp"/>
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="40dp"
+                    android:layout_weight="1"
+                    android:text="Save"
+                    android:background="@color/wavePrimary"
+                    android:textColor="@color/waveTextWh"
+                    android:textStyle="bold"
+                    android:textSize="17sp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
