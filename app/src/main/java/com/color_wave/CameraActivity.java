@@ -1,7 +1,10 @@
 package com.color_wave;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Camera;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -41,6 +44,8 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -61,9 +66,9 @@ public class CameraActivity extends AppCompatActivity {
         private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
         static {
             ORIENTATIONS.append(Surface.ROTATION_0, 90);
-            ORIENTATIONS.append(Surface.ROTATION_90, 0);
-            ORIENTATIONS.append(Surface.ROTATION_180, 270);
-            ORIENTATIONS.append(Surface.ROTATION_270, 180);
+            ORIENTATIONS.append(Surface.ROTATION_90, 90);
+            ORIENTATIONS.append(Surface.ROTATION_180, 90);
+            ORIENTATIONS.append(Surface.ROTATION_270, 90);
         }
         private String cameraId;
         protected CameraDevice cameraDevice;
@@ -100,7 +105,13 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
                 //open your camera here
-                openCamera();
+                if (ActivityCompat.checkSelfPermission(CameraActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    return;
+                }
+                else {
+                    openCamera();
+                }
             }
             @Override
             public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
@@ -174,14 +185,14 @@ public class CameraActivity extends AppCompatActivity {
                     height = jpegSizes[0].getHeight();
                 }
                 ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
-                List<Surface> outputSurfaces = new ArrayList<Surface>(2);
+                List<Surface> outputSurfaces = new ArrayList<>(2);
                 outputSurfaces.add(reader.getSurface());
                 outputSurfaces.add(new Surface(textureView.getSurfaceTexture()));
                 final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
                 captureBuilder.addTarget(reader.getSurface());
                 captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
                 // Orientation
-                int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                final int rotation = getWindowManager().getDefaultDisplay().getRotation();
                 captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
 
                 // Create the file directory
@@ -197,21 +208,28 @@ public class CameraActivity extends AppCompatActivity {
                 ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                     @Override
                     public void onImageAvailable(ImageReader reader) {
-                        Image image = null;
                         try {
-                            image = reader.acquireLatestImage();
-                            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                            byte[] bytes = new byte[buffer.capacity()];
-                            buffer.get(bytes);
-                            save(bytes);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } finally {
-                            if (image != null) {
+                            Image image = reader.acquireLatestImage();
+                            try {
+                                ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                                byte[] bytes = new byte[buffer.capacity()];
+                                buffer.get(bytes);
+
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
+                                Matrix matrix = new Matrix();
+                                matrix.postRotate(ORIENTATIONS.get(rotation));
+                                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                                bytes = stream.toByteArray();
+                                Log.e(TAG, "" + rotation);
+                                save(bytes);
+                            } finally {
                                 image.close();
                             }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
                     private void save(byte[] bytes) throws IOException {
