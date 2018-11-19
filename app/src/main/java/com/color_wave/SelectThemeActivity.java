@@ -7,16 +7,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.loopj.android.http.Base64;
 import com.loopj.android.http.RequestParams;
@@ -24,6 +21,7 @@ import com.loopj.android.http.RequestParams;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import me.relex.circleindicator.CircleIndicator;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MultipartBody;
@@ -32,6 +30,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
 public class SelectThemeActivity extends AppCompatActivity {
 
@@ -77,7 +81,9 @@ public class SelectThemeActivity extends AppCompatActivity {
                 getAsyncCall(encodedImage);
             }
         });
+
     }
+
 
     public void getAsyncCall(String encodedImage){
         OkHttpClient httpClient = new OkHttpClient();
