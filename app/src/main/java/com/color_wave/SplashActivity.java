@@ -9,7 +9,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent openSplashIntent = new Intent(this, MainActivity.class);
+        Intent openSplashIntent = new Intent(this, CameraActivity.class);
         startActivity(openSplashIntent);
         finish();
     }
