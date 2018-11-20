@@ -101,7 +101,7 @@ public class SelectThemeActivity extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
-        ProgressDialog dialog = ProgressDialog.show(SelectThemeActivity.this, "",
+        final ProgressDialog dialog = ProgressDialog.show(SelectThemeActivity.this, "",
                     "Processing. Please wait...", true);
 
         httpClient.newCall(request).enqueue(new Callback() {
