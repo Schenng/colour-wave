@@ -107,6 +107,7 @@ public class SelectThemeActivity extends AppCompatActivity {
         httpClient.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
                 Log.e("LOG", "Error getting response from server.");
+                finish();
             }
 
             @Override public void onResponse(Call call, Response response) throws IOException {
