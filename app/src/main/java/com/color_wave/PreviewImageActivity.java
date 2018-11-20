@@ -16,6 +16,7 @@ import com.loopj.android.http.Base64;
 import com.loopj.android.http.RequestParams;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -45,6 +46,7 @@ public class PreviewImageActivity extends AppCompatActivity {
             imagePreview.setImageBitmap(imagePreviewBitmap);
         } catch (IOException e) {
             e.printStackTrace();
+            finish();
         }
 
         Button yesButton = (Button) findViewById(R.id.yesButton);
