@@ -378,14 +378,22 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         public void configureTransform(int width, int height){
-            int rotation = getWindowManager().getDefaultDisplay().getRotation();
+            int rotation = CameraActivity.this.getWindowManager().getDefaultDisplay().getRotation();
             Matrix matrix = new Matrix();
             RectF viewRect = new RectF(0, 0, width, height);
             RectF bufferRect = new RectF(0, 0, imageDimension.getHeight(), imageDimension.getWidth());
             float centerX = viewRect.centerX();
             float centerY = viewRect.centerY();
-            if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
-                bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
+            if (Surface.ROTATION_90 == rotation) {
+                bufferRect.offset(centerX - (bufferRect.centerX() - 100), centerY - (bufferRect.centerY()));
+                matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
+                float scale = Math.max(
+                        (float) height / imageDimension.getHeight(),
+                        (float) width / imageDimension.getWidth());
+                matrix.postScale(scale, scale, centerX, centerY);
+                matrix.postRotate(90 * (rotation - 2), centerX, centerY);
+            } else if (Surface.ROTATION_270 == rotation) {
+                bufferRect.offset(centerX - (bufferRect.centerX()), centerY - (bufferRect.centerY() - 100));
                 matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
                 float scale = Math.max(
                         (float) height / imageDimension.getHeight(),
