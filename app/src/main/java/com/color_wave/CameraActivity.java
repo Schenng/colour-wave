@@ -85,8 +85,6 @@ public class CameraActivity extends AppCompatActivity {
         private Handler mBackgroundHandler;
         private HandlerThread mBackgroundThread;
         Uri imageUri;
-        int rotationOffset;
-
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +112,7 @@ public class CameraActivity extends AppCompatActivity {
                     return;
                 }
                 else {
-                    openCamera();
+                    openCamera(width, height);
                 }
             }
             @Override
@@ -228,8 +226,14 @@ public class CameraActivity extends AppCompatActivity {
                                 buffer.get(bytes);
 
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
-                                Log.e(TAG, bitmap.getWidth() + " " + bitmap.getHeight());
                                 bitmap = resizeBitmap(bitmap);
+
+                                int orientation = getResources().getConfiguration().orientation;
+                                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                                    Matrix matrix = new Matrix();
+                                    matrix.postRotate(90);
+                                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                                }
 
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -315,7 +319,7 @@ public class CameraActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        private void openCamera() {
+        private void openCamera(int width, int height) {
             CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
             Log.e(TAG, "is camera open");
             try {
@@ -323,20 +327,15 @@ public class CameraActivity extends AppCompatActivity {
                 CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
                 StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                 assert map != null;
-                imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
                 // Add permission for camera and let user grant the permission
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
                     return;
                 }
-                configureTransform(imageDimension.getWidth(), imageDimension.getHeight());
-                manager.openCamera(cameraId, stateCallback, null);
 
-                int orientation = getResources().getConfiguration().orientation;
-                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    Log.e(TAG, "CHANGE");
-                    textureView.setAspectRatio(imageDimension.getWidth(), imageDimension.getHeight() + 5);
-                }
+                imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
+                configureTransform(width, height);
+                manager.openCamera(cameraId, stateCallback, null);
 
             } catch (CameraAccessException e) {
                 e.printStackTrace();
@@ -380,7 +379,7 @@ public class CameraActivity extends AppCompatActivity {
             Log.e(TAG, "onResume");
             startBackgroundThread();
             if (textureView.isAvailable()) {
-                openCamera();
+                openCamera(textureView.getWidth(), textureView.getHeight());
             } else {
                 textureView.setSurfaceTextureListener(textureListener);
             }
@@ -412,12 +411,6 @@ public class CameraActivity extends AppCompatActivity {
                 matrix.postRotate(180, centerX, centerY);
             }
 
-            int orientation = getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                textureView.setAspectRatio(
-                        imageDimension.getWidth(), imageDimension.getHeight() + 5);
-            }
-
             textureView.setTransform(matrix);
         }
 
@@ -444,5 +437,17 @@ public class CameraActivity extends AppCompatActivity {
             bitmap.recycle();
             return resizedBitmap;
 
+        }
+
+        @Override
+        public void onConfigurationChanged(Configuration config){
+            super.onConfigurationChanged(config);
+
+            int orientation = getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                textureView.setAspectRatio(imageDimension.getHeight() + 120, imageDimension.getWidth());
+            } else {
+                textureView.setAspectRatio(imageDimension.getWidth(), imageDimension.getHeight());
+            }
         }
     }
