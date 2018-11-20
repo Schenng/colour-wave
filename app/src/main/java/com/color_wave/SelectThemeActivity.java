@@ -87,7 +87,7 @@ public class SelectThemeActivity extends AppCompatActivity {
 
     public void getAsyncCall(String encodedImage){
         OkHttpClient httpClient = new OkHttpClient();
-        String url = "http://35.184.125.33/image";
+        String url = "http://35.203.28.23/image";
         // String url = "http://10.0.2.2:8000/image"; uncomment for local
 
         RequestBody formBody = new MultipartBody.Builder()
