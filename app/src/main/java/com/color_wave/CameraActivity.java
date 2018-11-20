@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -63,12 +64,12 @@ public class CameraActivity extends AppCompatActivity {
         private static final String TAG = "AndroidCameraApi";
         private Button takePictureButton;
         private TextureView textureView;
-        private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+        private static final SparseIntArray ORIENTATIONS = new SparseIntArray(4);
         static {
             ORIENTATIONS.append(Surface.ROTATION_0, 90);
-            ORIENTATIONS.append(Surface.ROTATION_90, 90);
-            ORIENTATIONS.append(Surface.ROTATION_180, 90);
-            ORIENTATIONS.append(Surface.ROTATION_270, 90);
+            ORIENTATIONS.append(Surface.ROTATION_90, 0);
+            ORIENTATIONS.append(Surface.ROTATION_180, 270);
+            ORIENTATIONS.append(Surface.ROTATION_270, 180);
         }
         private String cameraId;
         protected CameraDevice cameraDevice;
@@ -116,6 +117,7 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
                 // Transform you image captured size according to the surface width and height
+                configureTransform(width, height);
             }
             @Override
             public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
@@ -193,7 +195,10 @@ public class CameraActivity extends AppCompatActivity {
                 captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
                 // Orientation
                 final int rotation = getWindowManager().getDefaultDisplay().getRotation();
-                captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+                int sensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+                int surfaceRotation = ORIENTATIONS.get(rotation);
+                int jpegOrientation = (surfaceRotation + sensorOrientation + 270) % 360;
+                captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, jpegOrientation);
 
                 // Create the file directory
                 final File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "ColorWave");
@@ -216,14 +221,10 @@ public class CameraActivity extends AppCompatActivity {
                                 buffer.get(bytes);
 
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
-                                Matrix matrix = new Matrix();
-                                matrix.postRotate(ORIENTATIONS.get(rotation));
-                                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-
+                                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()*3/5, bitmap.getHeight()*3/5, true);
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                                 bytes = stream.toByteArray();
-                                Log.e(TAG, "" + rotation);
                                 save(bytes);
                             } finally {
                                 image.close();
@@ -319,6 +320,7 @@ public class CameraActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
                     return;
                 }
+                configureTransform(imageDimension.getWidth(), imageDimension.getHeight());
                 manager.openCamera(cameraId, stateCallback, null);
             } catch (CameraAccessException e) {
                 e.printStackTrace();
@@ -373,5 +375,26 @@ public class CameraActivity extends AppCompatActivity {
             //closeCamera();
             stopBackgroundThread();
             super.onPause();
+        }
+
+        public void configureTransform(int width, int height){
+            int rotation = getWindowManager().getDefaultDisplay().getRotation();
+            Matrix matrix = new Matrix();
+            RectF viewRect = new RectF(0, 0, width, height);
+            RectF bufferRect = new RectF(0, 0, imageDimension.getHeight(), imageDimension.getWidth());
+            float centerX = viewRect.centerX();
+            float centerY = viewRect.centerY();
+            if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
+                bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
+                matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
+                float scale = Math.max(
+                        (float) height / imageDimension.getHeight(),
+                        (float) width / imageDimension.getWidth());
+                matrix.postScale(scale, scale, centerX, centerY);
+                matrix.postRotate(90 * (rotation - 2), centerX, centerY);
+            } else if (Surface.ROTATION_180 == rotation) {
+                matrix.postRotate(180, centerX, centerY);
+            }
+            textureView.setTransform(matrix);
         }
     }
