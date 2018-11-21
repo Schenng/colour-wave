@@ -93,7 +93,7 @@ public class CameraActivity extends AppCompatActivity {
             textureView = (AutoFitTextureView) findViewById(R.id.texture);
             assert textureView != null;
             textureView.setSurfaceTextureListener(textureListener);
-            takePictureButton = (Button) findViewById(R.id.btn_takepicture);
+            takePictureButton = (Button) findViewById(R.id.btn_take_picture);
             assert takePictureButton != null;
             takePictureButton.setOnClickListener(new View.OnClickListener() {
                 @Override
