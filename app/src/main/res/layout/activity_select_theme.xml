@@ -58,5 +58,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="edges2dresses" />
+
+        <RadioButton
+            android:id="@+id/radioEdges2Watches"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="edges2watches" />
     </RadioGroup>
 </android.support.constraint.ConstraintLayout>

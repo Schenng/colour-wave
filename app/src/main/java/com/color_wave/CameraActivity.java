@@ -231,7 +231,7 @@ public class CameraActivity extends AppCompatActivity {
                                 int orientation = getResources().getConfiguration().orientation;
                                 if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                                     Matrix matrix = new Matrix();
-                                    matrix.postRotate(90);
+                                    // matrix.postRotate(90);
                                     bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                                 }
 
