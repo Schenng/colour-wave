@@ -33,32 +33,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_horizontal"
-                android:weightSum="2"
+                android:layout_weight="2"
                 android:layout_margin="15dp">
 
                 <Button
                     android:id="@+id/redoButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="40dp"
-                    android:layout_weight="1"
-                    android:text="Redo"
-                    android:background="@color/wavePrimary"
-                    android:textColor="@color/waveTextWh"
-                    android:textStyle="bold"
-                    android:textSize="17sp"/>
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginEnd="75dp"
+                    android:background="@drawable/undo_button"/>
 
                 <Button
                     android:id="@+id/saveButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="40dp"
-                    android:layout_weight="1"
-                    android:text="Save"
-                    android:background="@color/wavePrimary"
-                    android:textColor="@color/waveTextWh"
-                    android:textStyle="bold"
-                    android:textSize="17sp"/>
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="75dp"
+                    android:background="@drawable/save_button"/>
 
             </LinearLayout>
         </LinearLayout>

@@ -107,6 +107,7 @@ public class SelectThemeActivity extends AppCompatActivity {
         httpClient.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
                 Log.e("LOG", "Error getting response from server.");
+                dialog.dismiss();
                 finish();
             }
 
@@ -122,6 +123,7 @@ public class SelectThemeActivity extends AppCompatActivity {
 
                 Intent DisplayImageIntent = new Intent(SelectThemeActivity.this, DisplayImageActivity.class);
                 DisplayImageIntent.putExtra("processedImage", processedImage);
+                dialog.dismiss();
                 finish();
                 startActivity(DisplayImageIntent);
             }

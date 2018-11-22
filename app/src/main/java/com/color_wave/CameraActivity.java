@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
@@ -65,7 +66,9 @@ import java.util.Locale;
 
 public class CameraActivity extends AppCompatActivity {
         private static final String TAG = "AndroidCameraApi";
+        static final int PICK_IMAGE = 1;
         private Button takePictureButton;
+        private Button uploadPictureButton;
         private AutoFitTextureView textureView;
         private static final SparseIntArray ORIENTATIONS = new SparseIntArray(4);
         static {
@@ -93,7 +96,7 @@ public class CameraActivity extends AppCompatActivity {
             textureView = (AutoFitTextureView) findViewById(R.id.texture);
             assert textureView != null;
             textureView.setSurfaceTextureListener(textureListener);
-            takePictureButton = (Button) findViewById(R.id.btn_takepicture);
+            takePictureButton = (Button) findViewById(R.id.btn_take_picture);
             assert takePictureButton != null;
             takePictureButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,7 +104,16 @@ public class CameraActivity extends AppCompatActivity {
                     takePicture();
                 }
             });
-
+            uploadPictureButton = findViewById(R.id.btn_upload_image);
+            assert uploadPictureButton != null;
+            uploadPictureButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    galleryIntent.setType("image/*");
+                    startActivityForResult(galleryIntent, PICK_IMAGE);
+                }
+            });
         }
         TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
             @Override
@@ -450,4 +462,15 @@ public class CameraActivity extends AppCompatActivity {
                 textureView.setAspectRatio(imageDimension.getWidth(), imageDimension.getHeight());
             }
         }
-    }
+
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == PICK_IMAGE){
+                if (data != null) {
+                    Uri pickedImageUri = data.getData();
+                    Intent previewImageIntent = new Intent(CameraActivity.this, PreviewImageActivity.class);
+                    previewImageIntent.putExtra("imageUri", pickedImageUri.toString());
+                    startActivity(previewImageIntent);            }
+            }
+        }
+}
