@@ -61,17 +61,13 @@ public class SelectThemeActivity extends AppCompatActivity {
     private GridView themeGrid;
     private ThemeAdapter adapter;
 
-    private ArrayList<String> themeList = new ArrayList<String>(){{
-        add("edges2shoes");
-        add("edges2handbags");
-        add("edges2bracelets");
-        add("edges2dresses");
-        add("edges2watches");
-        add("placeholder");
-        add("placeholder");
-        add("placeholder");
+    private ArrayList<ColorTheme> themeList = new ArrayList<ColorTheme>(){{
+        add(new ColorTheme("Shoes", "edges2shoes"));
+        add(new ColorTheme("Handbags", "edges2handbags"));
+        add(new ColorTheme("Bracelets", "edges2bracelets"));
+        add(new ColorTheme("Dresses", "edges2dresses"));
+        add(new ColorTheme("Watches", "edges2watches"));
     }};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

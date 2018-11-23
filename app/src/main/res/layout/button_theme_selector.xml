@@ -4,8 +4,23 @@
     android:layout_height="wrap_content">
     <RadioButton
         android:id="@+id/theme_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:button="@android:color/transparent"
+        android:background="@drawable/theme_button"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true">
+    </RadioButton>
+    <TextView
+        android:id="@+id/theme_text"
+        android:layout_below="@+id/theme_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/theme_button">
-    </RadioButton>
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="16sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"/>
 </RelativeLayout>
