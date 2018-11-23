@@ -69,7 +69,6 @@ public class SelectThemeActivity extends AppCompatActivity {
         add(new ColorTheme("Watches", "edges2watches"));
     }};
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

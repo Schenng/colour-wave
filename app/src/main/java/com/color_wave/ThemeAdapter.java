@@ -29,6 +29,7 @@ public class ThemeAdapter extends ArrayAdapter {
         private String queryStr;
         private String labelStr;
         private RadioButton radioButton;
+        private TextView textView;
     }
 
     @NonNull
