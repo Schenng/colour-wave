@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/white"
     tools:context=".PreviewImageActivity">
 
     <LinearLayout
@@ -33,7 +33,7 @@
                 android:id="@+id/confirmImageText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Color in this image?"
+                android:text="Color this image?"
                 android:textSize="20sp"
                 android:layout_weight="2"
                 android:textColor="@color/waveTextBl"
