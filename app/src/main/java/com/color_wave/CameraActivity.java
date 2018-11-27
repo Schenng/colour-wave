@@ -17,6 +17,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.Manifest;
 import android.content.Context;
@@ -48,6 +49,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -69,6 +71,7 @@ public class CameraActivity extends AppCompatActivity {
         static final int PICK_IMAGE = 1;
         private Button takePictureButton;
         private Button uploadPictureButton;
+        private Button settingsButton;
         private AutoFitTextureView textureView;
         private static final SparseIntArray ORIENTATIONS = new SparseIntArray(4);
         static {
@@ -87,6 +90,7 @@ public class CameraActivity extends AppCompatActivity {
         private static final int REQUEST_CAMERA_PERMISSION = 200;
         private Handler mBackgroundHandler;
         private HandlerThread mBackgroundThread;
+        private PopupMenu popupMenu;
         Uri imageUri;
 
         @Override
@@ -104,7 +108,7 @@ public class CameraActivity extends AppCompatActivity {
                     takePicture();
                 }
             });
-            uploadPictureButton = findViewById(R.id.btn_upload_image);
+            uploadPictureButton = (Button) findViewById(R.id.btn_upload_image);
             assert uploadPictureButton != null;
             uploadPictureButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,6 +118,22 @@ public class CameraActivity extends AppCompatActivity {
                     startActivityForResult(galleryIntent, PICK_IMAGE);
                 }
             });
+            assert settingsButton != null;
+            settingsButton = (Button) findViewById(R.id.btn_settings_image);
+            settingsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    popupMenu = new PopupMenu(CameraActivity.this, settingsButton);
+                    popupMenu.getMenuInflater().inflate(R.menu.main_menu, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Toast.makeText(CameraActivity.this,"You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
         }
         TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
             @Override
@@ -121,7 +141,6 @@ public class CameraActivity extends AppCompatActivity {
                 //open your camera here
                 if (ActivityCompat.checkSelfPermission(CameraActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                    return;
                 }
                 else {
                     openCamera(width, height);
