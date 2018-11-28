@@ -7,10 +7,4 @@
             <size android:width="100dp" android:height="100dp" />
         </shape>
     </item>
-    <item
-        android:drawable="@drawable/camera_icon"
-        android:width="50dp"
-        android:height="50dp"
-        android:gravity="center"
-    />
 </layer-list>
