@@ -46,7 +46,7 @@ public class ThemeAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        Drawable image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.check_button, null);
+        Drawable image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.question_icon, null);
         viewHolder.radioButton.setCompoundDrawablesWithIntrinsicBounds(null, image, null, null);
         viewHolder.radioButton.setText(viewHolder.labelStr);
         viewHolder.radioButton.setChecked(position == selectedPosition);
