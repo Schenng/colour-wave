@@ -18,6 +18,7 @@ public class ThemeAdapter extends ArrayAdapter {
     private Context themeContext;
     private List<ColorTheme> themeList;
     private int selectedPosition;
+    Drawable image;
 
     ThemeAdapter(Context context, ArrayList<ColorTheme> list){
         super(context, R.layout.button_theme_selector, list);
@@ -46,7 +47,20 @@ public class ThemeAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        Drawable image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.question_icon, null);
+        if(viewHolder.labelStr.equals("Shoes")) {
+            image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.shoes, null);
+        } else if (viewHolder.labelStr.equals("Handbags")){
+            image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.handbags, null);
+        } else if (viewHolder.labelStr.equals("Bracelets")){
+            image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.bracelets, null);
+        } else if (viewHolder.labelStr.equals("Dresses")){
+            image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.dresses, null);
+        } else if (viewHolder.labelStr.equals("Watches")){
+            image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.watches, null);
+        } else {
+            image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.question_icon, null);
+        }
+
         viewHolder.radioButton.setCompoundDrawablesWithIntrinsicBounds(null, image, null, null);
         viewHolder.radioButton.setText(viewHolder.labelStr);
         viewHolder.radioButton.setChecked(position == selectedPosition);
