@@ -118,7 +118,7 @@ public class DisplayImageActivity extends AppCompatActivity {
         }
 
         Toast.makeText(this, "Photo saved", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, CameraActivity.class));
     }
 
 }

@@ -5,65 +5,32 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/white"
     tools:context=".SelectThemeActivity">
 
-    <Button
-        android:id="@+id/processButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="180dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="process"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="182dp"
-        android:layout_height="99dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/processButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <RadioButton
-            android:id="@+id/radioEdges2Shoes"
+        <GridView
+            android:id="@+id/theme_grid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="edges2shoes" />
+            android:horizontalSpacing="5dp"
+            android:numColumns="auto_fit"
+            android:columnWidth="150dp"
+            android:verticalSpacing="5dp"
+            android:layout_above="@id/processButton"
+            android:gravity="center"
+            android:layout_alignParentTop="true"/>
 
-        <RadioButton
-            android:id="@+id/radioEdges2Handbags"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="edges2handbags" />
+        <Button
+            android:id="@+id/processButton"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:text="process"
+            android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
 
-        <RadioButton
-            android:id="@+id/radioEdges2Bracelets"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="edges2bracelets" />
-
-        <RadioButton
-            android:id="@+id/radioEdges2Dresses"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="edges2dresses" />
-
-        <RadioButton
-            android:id="@+id/radioEdges2Watches"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="edges2watches" />
-    </RadioGroup>
 </android.support.constraint.ConstraintLayout>

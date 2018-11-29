@@ -2,16 +2,27 @@ package com.color_wave;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.SparseIntArray;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -20,6 +31,7 @@ import com.loopj.android.http.RequestParams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import me.relex.circleindicator.CircleIndicator;
 import okhttp3.Call;
@@ -36,6 +48,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 public class SelectThemeActivity extends AppCompatActivity {
 
@@ -43,8 +58,16 @@ public class SelectThemeActivity extends AppCompatActivity {
     Uri imageUri = null;
     String selectedTheme = null;
 
-    private RadioGroup radioGroup;
-    private RadioButton radioButton;
+    private GridView themeGrid;
+    private ThemeAdapter adapter;
+
+    private ArrayList<ColorTheme> themeList = new ArrayList<ColorTheme>(){{
+        add(new ColorTheme("Shoes", "edges2shoes"));
+        add(new ColorTheme("Handbags", "edges2handbags"));
+        add(new ColorTheme("Bracelets", "edges2bracelets"));
+        add(new ColorTheme("Dresses", "edges2dresses"));
+        add(new ColorTheme("Watches", "edges2watches"));
+    }};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,32 +81,37 @@ public class SelectThemeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        themeGrid = (GridView) findViewById(R.id.theme_grid);
+
+        adapter = new ThemeAdapter(this, themeList);
+        themeGrid.setAdapter(adapter);
 
         Button processButton = (Button) findViewById(R.id.processButton);
         processButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                imagePreviewBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageBytes = baos.toByteArray();
-                String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            imagePreviewBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
-                RequestParams imageParam = new RequestParams();
-                imageParam.add("image", encodedImage);
+            RequestParams imageParam = new RequestParams();
+            imageParam.add("image", encodedImage);
 
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-
-                radioButton = (RadioButton) findViewById(selectedId);
-
-                selectedTheme = radioButton.getText().toString();
-
-                getAsyncCall(encodedImage);
+            selectedTheme = adapter.getSelectedItem();
+            getAsyncCall(encodedImage);
             }
         });
 
+
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration config){
+        super.onConfigurationChanged(config);
+
+        int orientation = getResources().getConfiguration().orientation;
+    }
 
     public void getAsyncCall(String encodedImage){
         OkHttpClient httpClient = new OkHttpClient();
