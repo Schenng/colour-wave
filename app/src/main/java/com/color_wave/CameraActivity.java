@@ -16,6 +16,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -123,11 +124,24 @@ public class CameraActivity extends AppCompatActivity {
             settingsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    popupMenu = new PopupMenu(CameraActivity.this, settingsButton);
+                    Context wrapper = new ContextThemeWrapper(CameraActivity.this, R.style.MenuTheme);
+                    popupMenu = new PopupMenu(wrapper, settingsButton);
                     popupMenu.getMenuInflater().inflate(R.menu.main_menu, popupMenu.getMenu());
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(CameraActivity.this,"You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                            String itemStr = item.getTitle().toString();
+                            switch(itemStr){
+                                case "Help":
+                                    Toast.makeText(CameraActivity.this,"You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                                    break;
+                                case "About":
+                                    Toast.makeText(CameraActivity.this,"You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                                    break;
+                                default:
+                                    Toast.makeText(CameraActivity.this,"How'd you get here", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+
                             return true;
                         }
                     });
