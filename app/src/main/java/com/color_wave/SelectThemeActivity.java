@@ -132,6 +132,7 @@ public class SelectThemeActivity extends AppCompatActivity {
         final ProgressDialog dialog = ProgressDialog.show(SelectThemeActivity.this, "",
                     "Processing. Please wait...", true);
 
+
         httpClient.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
                 Log.e("LOG", "Error getting response from server.");

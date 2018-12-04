@@ -1,5 +1,6 @@
 package com.color_wave;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -15,7 +16,9 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -118,16 +121,38 @@ public class CameraActivity extends AppCompatActivity {
                     startActivityForResult(galleryIntent, PICK_IMAGE);
                 }
             });
+
+            final AlertDialog.Builder menuDialog = new AlertDialog.Builder(CameraActivity.this, R.style.DialogTheme)
+                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
             assert settingsButton != null;
             settingsButton = (Button) findViewById(R.id.btn_settings_image);
             settingsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    popupMenu = new PopupMenu(CameraActivity.this, settingsButton);
+                    Context wrapper = new ContextThemeWrapper(CameraActivity.this, R.style.MenuTheme);
+                    popupMenu = new PopupMenu(wrapper, settingsButton);
                     popupMenu.getMenuInflater().inflate(R.menu.main_menu, popupMenu.getMenu());
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(CameraActivity.this,"You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                            String itemStr = item.getTitle().toString();
+                            switch(itemStr){
+                                case "Help":
+                                    menuDialog.setTitle("How it works").setMessage("1. Draw something \n2. Take a photo \n3. Colour").show();
+                                    break;
+                                case "About":
+                                    menuDialog.setTitle("Color Wave").setMessage("Version XX").show();
+                                    break;
+                                default:
+                                    Toast.makeText(CameraActivity.this,"Unreachable part", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+
                             return true;
                         }
                     });
