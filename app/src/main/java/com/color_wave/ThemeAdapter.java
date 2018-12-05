@@ -29,7 +29,6 @@ public class ThemeAdapter extends ArrayAdapter {
         private String queryStr;
         private String labelStr;
         private RadioButton radioButton;
-        private TextView textView;
     }
 
     @NonNull
@@ -40,7 +39,6 @@ public class ThemeAdapter extends ArrayAdapter {
             viewHolder = new ViewHolder();
             view = LayoutInflater.from(themeContext).inflate(R.layout.button_theme_selector, parent, false);
             viewHolder.radioButton = (RadioButton) view.findViewById(R.id.theme_button);
-            viewHolder.textView = (TextView) view.findViewById(R.id.theme_text);
             viewHolder.queryStr = themeList.get(position).getQuery();
             viewHolder.labelStr = themeList.get(position).getLabel();
             view.setTag(viewHolder);
@@ -48,9 +46,9 @@ public class ThemeAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.textView.setText(viewHolder.labelStr);
         Drawable image = ResourcesCompat.getDrawable(themeContext.getResources(), R.drawable.check_button, null);
-//        viewHolder.radioButton.setButtonDrawable(image);
+        viewHolder.radioButton.setCompoundDrawablesWithIntrinsicBounds(null, image, null, null);
+        viewHolder.radioButton.setText(viewHolder.labelStr);
         viewHolder.radioButton.setChecked(position == selectedPosition);
         viewHolder.radioButton.setMinHeight(image.getIntrinsicHeight());
         viewHolder.radioButton.refreshDrawableState();
